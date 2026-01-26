@@ -1,0 +1,76 @@
+import React, { useState, useEffect } from "react";
+import TodoForm from "./components/TodoForm";
+import FilterButtons from "./components/FilterButtons";
+import TodoList from "./components/TodoList";
+
+const App = () => {
+  // Load data immediately when state is created
+  const [todos, setTodos] = useState(() => {
+    const saved = localStorage.getItem("kodbud_todos");
+    return saved ? JSON.parse(saved) : [];
+  });
+
+  const [inputValue, setInputValue] = useState("");
+  const [filter, setFilter] = useState("All");
+  const [editId, setEditId] = useState(null);
+
+  // Sync logic: useEffect is needed to save changes
+  useEffect(() => {
+    localStorage.setItem("kodbud_todos", JSON.stringify(todos));
+  }, [todos]);
+
+  // CRUD Functions
+  const handleAddOrUpdate = (e) => {
+    e.preventDefault();
+    if (!inputValue.trim()) return;
+
+    if (editId) {
+      setTodos(todos.map(t => t.id === editId ? { ...t, text: inputValue } : t));
+      setEditId(null);
+    } else {
+      setTodos([...todos, { id: Date.now(), text: inputValue, completed: false }]);
+    }
+    setInputValue("");
+  };
+
+  const deleteTodo = (id) => setTodos(todos.filter(t => t.id !== id));
+  const toggleComplete = (id) => setTodos(todos.map(t => t.id === id ? { ...t, completed: !t.completed } : t));
+  const startEdit = (todo) => { 
+    setInputValue(todo.text); 
+    setEditId(todo.id); 
+  };
+
+  const filteredTodos = todos.filter(t => {
+    if (filter === "Completed") return t.completed;
+    if (filter === "Pending") return !t.completed;
+    return true;
+  });
+
+  return (
+    <div className="min-h-screen bg-slate-50 flex items-center justify-center p-6 text-gray-800 bg-[url('https://tse1.mm.bing.net/th/id/OIP.hE_b4hlCZxTo-JPQYLQAZgHaHa?pid=Api&P=0&h=180') ]">
+      <div className="bg-white w-full max-w-lg rounded-2xl shadow-xl p-8">
+        <h1 className="text-3xl font-extrabold text-gray-900 mb-2 text-center pb-10">My Tasks</h1>
+        
+        
+        <TodoForm 
+          inputValue={inputValue} 
+          setInputValue={setInputValue} 
+          handleAddOrUpdate={handleAddOrUpdate} 
+          editId={editId} 
+        />
+
+        <FilterButtons filter={filter} setFilter={setFilter} />
+
+        <TodoList 
+          filteredTodos={filteredTodos} 
+          toggleComplete={toggleComplete} 
+          startEdit={startEdit} 
+          deleteTodo={deleteTodo}
+          filter={filter}
+        />
+      </div>
+    </div>
+  );
+};
+
+export default App;
