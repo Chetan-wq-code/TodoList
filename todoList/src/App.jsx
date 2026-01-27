@@ -2,11 +2,12 @@ import React, { useState, useEffect } from "react";
 import TodoForm from "./components/TodoForm";
 import FilterButtons from "./components/FilterButtons";
 import TodoList from "./components/TodoList";
+import bg_image from "./Images/bg_image.png"
 
 const App = () => {
   // Load data immediately when state is created
   const [todos, setTodos] = useState(() => {
-    const saved = localStorage.getItem("kodbud_todos");
+    const saved = localStorage.getItem("my_todos");
     return saved ? JSON.parse(saved) : [];
   });
 
@@ -16,7 +17,7 @@ const App = () => {
 
   // Sync logic: useEffect is needed to save changes
   useEffect(() => {
-    localStorage.setItem("kodbud_todos", JSON.stringify(todos));
+    localStorage.setItem("my_todos", JSON.stringify(todos));
   }, [todos]);
 
   // CRUD Functions
@@ -47,7 +48,10 @@ const App = () => {
   });
 
   return (
-    <div className="min-h-screen bg-slate-50 flex items-center justify-center p-6 text-gray-800 bg-[url('https://tse1.mm.bing.net/th/id/OIP.hE_b4hlCZxTo-JPQYLQAZgHaHa?pid=Api&P=0&h=180') ]">
+    <div
+      className="min-h-screen bg-slate-50 flex items-center justify-center p-6 text-gray-800  bg-[url('./Images/bg_image.png')] bg-cover"
+      
+    >
       <div className="bg-white w-full max-w-lg rounded-2xl shadow-xl p-8">
         <h1 className="text-3xl font-extrabold text-gray-900 mb-2 text-center pb-10">My Tasks</h1>
         
