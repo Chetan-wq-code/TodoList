@@ -4,7 +4,7 @@ const TodoForm = ({ inputValue, setInputValue, handleAddOrUpdate, editId }) => {
   return (
     <form onSubmit={handleAddOrUpdate} className="flex-col sm:flex-row mb-6">
       <input
-        className="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 mr-6 text-right pr-30 mb-4 sm:mb-0 w-full sm:w-auto"
+        className="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 mr-6 text-right pr-25 mb-4 sm:mb-0 w-full sm:w-auto"
         value={inputValue}
         onChange={(e) => setInputValue(e.target.value)}
         placeholder="What needs to be done?"
